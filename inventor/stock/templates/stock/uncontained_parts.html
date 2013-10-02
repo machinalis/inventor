@@ -1,0 +1,47 @@
+{% extends "stock/base.html" %}
+
+{% block index %}Uncontained Parts{% endblock %}
+
+{% block content %}
+
+{% if uncontained_parts %}
+<div class="datagrid"><table>
+<thead><tr><th>Type</th><th>Brand</th><th>Specs</th><th>State</th><th>Where?</th></tr></thead>
+<tfoot>
+{% if is_paginated %}
+<tr><td colspan="5"><div id="paging"><ul>
+{% if page_obj.has_previous %}
+<li><a href="#"><span>Previous</span></a></li>
+{% endif %}
+
+{% for page in paginator.page_range %}
+<li><a href="#" {% if page == page_obj.number %}class="active"{% endif %}><span>{{page}}</span></a></li>
+{% endfor %}
+
+{% if page_obj.has_next %}
+<li><a href="#"><span>Next</span></a></li></ul></div></tr>
+{% endif %}
+{% endif %}
+</tfoot>
+<tbody>
+
+{% for part in uncontained_parts %}
+{% if forloop.counter|divisibleby:"2" %}
+<tr>
+{% else %}
+<tr class="alt">
+{% endif %}
+<td>{{ part.part_type }}</td>
+<td>{{ part.part_brand }}</td>
+<td>{{ part.part_specs }}</td>
+<td>{{ part.part_state }}</td>
+<td>{{ part.part_location }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table></div>
+{% else %}
+<p>There are no uncontained parts</p>
+{% endif %}
+
+{% endblock %}
